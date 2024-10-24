@@ -1,5 +1,5 @@
-import pgzrun
-TTILE="Recycle Paper Bags"
+import pgzrun, random
+TITLE="Recycle Paper Bags"
 WIDTH=800
 HEIGHT=600
 
@@ -13,18 +13,52 @@ gamecomplete=False
 currentlevel=1
 finallevel=10
 items=["bag","battery","bottle","chips"]
+h=[]
 
 speed=10
 
 def draw():
     screen.blit("bground", (0,0))
+    for g in h:
+        g.draw()
 
 def getitems(numberofitems):
     newitem=["paper"]
     for i in range(0,numberofitems):
+        randomoption=random.choice(items)
+        newitem.append(randomoption)
+    return newitem
+
+def createitems(newitem):
+    item=[]
+    for i in newitem:
+        a=Actor(str(i)+"img")
+        item.append(a)
+    return item
+
+def layout(itemstolayout):
+    numberofgaps=len(itemstolayout)+1
+    gapsize=WIDTH/numberofgaps
+    random.shuffle(itemstolayout)
+    for index,object in enumerate(itemstolayout):
+        newxposition=(index+1)*gapsize
+        object.x=newxposition
+
+def makeitems(numberofitems):
+    a=getitems(numberofitems)
+    b=createitems(a)
+    layout(b)
+    return b
+
+def animateitems(itemstoanimate):
+    for k in itemstoanimate:
         pass
 
+
+
 def update():
-    pass
+    global h,currentlevel
+    if len(h)==0:
+        h=makeitems(currentlevel)
 
 pgzrun.go()
